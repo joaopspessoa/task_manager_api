@@ -42,7 +42,6 @@ class TaskService extends Service
 
         // Obtém todos os dados da requisição.
         $data = $request->all();
-        $data['status'] = 'pending'; // Define o status padrão da tarefa.
         $data['user_id'] = $auth_user->id; // Associa a tarefa ao usuário autenticado.
 
         // Cria a tarefa no repositório.
