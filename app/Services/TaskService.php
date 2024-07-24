@@ -70,21 +70,47 @@ class TaskService extends Service
             'user_id' => $auth_user->id,
         ];
 
-        // Adiciona filtro de status, se fornecido.
-        if (isset($request->status) && $request->status) {
-            $filters['status'] = $request->status;
+        // Filtra as tarefas pelo status, se fornecido.
+        switch ($request->status) {
+            case 'pending':
+                $filters['status'] = $request->status;
+                $tasks_pending = $this->repository->get($filters, 'created_at', 'asc');
+                $tasks_in_progress = [];
+                $task_completed = [];
+                break;
+            case 'in progress':
+                $filters['status'] = $request->status;
+                $tasks_pending = [];
+                $tasks_in_progress = $this->repository->get($filters, 'created_at', 'asc');
+                $task_completed = [];
+                break;
+            case 'completed':
+                $filters['status'] = $request->status;
+                $tasks_pending = [];
+                $tasks_in_progress = [];
+                $task_completed = $this->repository->get($filters, 'created_at', 'asc');
+                break;
+            default:
+                $tasks_pending = $this->repository->get(['user_id' => $auth_user->id, 'status' => 'pending'], 'created_at', 'asc');
+                $tasks_in_progress = $this->repository->get(['user_id' => $auth_user->id, 'status' => 'in progress'], 'created_at', 'asc');
+                $task_completed = $this->repository->get(['user_id' => $auth_user->id, 'status' => 'completed'], 'created_at', 'asc');
         }
 
-        // Recupera tarefas filtradas do repositório.
-        $tasks = $this->repository->get($filters, 'created_at', 'asc');
-
         // Retorna mensagem de erro se nenhuma tarefa for encontrada.
-        if ($tasks->isEmpty()) {
+        if (
+            sizeof($tasks_pending) == 0 &&
+            sizeof($tasks_in_progress) == 0 &&
+            sizeof($task_completed) == 0
+        ) {
             return response()->json(['message' => 'Tasks not found.'], 400);
         }
 
         // Retorna a lista de tarefas com status HTTP 200.
-        return response()->json(['tasks' => $tasks], 200);
+        return response()->json([
+            'tasks_pending' => $tasks_pending,
+            'tasks_in_progress' => $tasks_in_progress,
+            'task_completed' => $task_completed,
+        ], 200);
     }
 
     /**
