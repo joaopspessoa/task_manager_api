@@ -1,59 +1,105 @@
-Task Manager API
-Este projeto é uma API para gerenciar tarefas, construída com PHP, Nginx e PostgreSQL. Abaixo estão as instruções para configurar e rodar o projeto usando Docker.
+Entendi! Vamos ajustar o texto para um formato de README mais tradicional e direto:
 
-Requisitos
-Docker
-Docker Compose
-Configuração do Ambiente
-1. Clone o Repositório
-Clone o repositório do projeto para o seu ambiente local:
+---
 
-bash
-Copiar código
+# Task Manager API
+
+Este projeto é uma API para gerenciar tarefas, construída com PHP, Nginx e PostgreSQL. A seguir estão as instruções para configurar e rodar o projeto usando Docker.
+
+## Requisitos
+
+- [Docker](https://docs.docker.com/get-docker/)
+- [Docker Compose](https://docs.docker.com/compose/install/)
+
+## Configuração
+
+### 1. Clonar o Repositório
+
+Clone o repositório do projeto e navegue até o diretório do projeto:
+
+```bash
 git clone <URL_DO_REPOSITORIO>
 cd <DIRETORIO_DO_PROJETO>
-2. Crie e Inicie os Contêineres
-Crie e inicie os contêineres definidos no docker-compose.yml:
+```
 
-bash
-Copiar código
+### 2. Criar e Iniciar os Contêineres
+
+Crie e inicie os contêineres com Docker Compose:
+
+```bash
 docker-compose up -d
-Este comando criará e iniciará os seguintes contêineres:
+```
 
-task_manager_api: Contêiner para a aplicação PHP.
-task_manager_nginx: Contêiner para o servidor Nginx.
-task_manager_postgres: Contêiner para o banco de dados PostgreSQL.
-3. Verifique se os Contêineres Estão em Execução
-Para verificar o status dos contêineres, use:
+### 3. Instalar Dependências do PHP
 
-bash
-Copiar código
-docker-compose ps
-4. Instale as Dependências do PHP
-Acesse o contêiner task_manager_api e instale as dependências do PHP:
+Acesse o contêiner da aplicação e instale as dependências do PHP:
 
-bash
-Copiar código
+```bash
 docker-compose exec app bash
 composer install
-5. Configure o Ambiente
-Certifique-se de que o arquivo .env está presente e configurado corretamente no diretório raiz do projeto. Se não houver um arquivo .env, copie o exemplo fornecido:
+```
 
-bash
-Copiar código
+### 4. Configurar o Ambiente
+
+Certifique-se de que o arquivo `.env` está presente no diretório raiz. Se não houver, copie o exemplo fornecido:
+
+```bash
 cp .env.example .env
-6. Execute as Migrações do Banco de Dados
-Para criar as tabelas do banco de dados e executar as migrações, use:
+```
 
-bash
-Copiar código
+### 5. Executar Migrações do Banco de Dados
+
+Para configurar o banco de dados, execute as migrações:
+
+```bash
 docker-compose exec app php artisan migrate
-7. Acesse a Aplicação
-A aplicação estará acessível em http://localhost:8004. Você pode acessar esta URL no seu navegador para interagir com a aplicação.
+```
 
-8. Encerramento dos Contêineres
-Quando terminar de trabalhar com o projeto, você pode parar e remover os contêineres com:
+### 6. Acessar a Aplicação
 
-bash
-Copiar código
+A aplicação estará disponível em [http://localhost:8004](http://localhost:8004).
+
+### 7. Encerrar os Contêineres
+
+Para parar e remover os contêineres, use:
+
+```bash
 docker-compose down
+```
+
+## Estrutura do `docker-compose.yml`
+
+- **app**: Contêiner para a aplicação PHP.
+  - **build**: Configura a construção da imagem do PHP.
+  - **context**: Diretório de contexto para a construção.
+  - **dockerfile**: Nome do Dockerfile.
+  - **volumes**: Monta o diretório do projeto.
+  - **environment**: Define variáveis de ambiente.
+
+- **nginx-server**: Contêiner para o servidor Nginx.
+  - **image**: Imagem do Nginx.
+  - **ports**: Mapeia a porta 80 do contêiner para a porta 8004 do host.
+  - **volumes**: Monta o diretório do projeto e a configuração do Nginx.
+
+- **db**: Contêiner para o banco de dados PostgreSQL.
+  - **image**: Imagem do PostgreSQL.
+  - **environment**: Define variáveis de ambiente para o banco de dados.
+  - **ports**: Mapeia a porta 5432 do contêiner para a porta 6543 do host.
+  - **volumes**: Monta o diretório para armazenar dados do banco.
+
+- **networks**: Define a rede padrão para os contêineres.
+
+## Dockerfile
+
+O `Dockerfile` configura a imagem para a aplicação PHP, incluindo:
+
+- Instalação de dependências do sistema e PHP.
+- Configuração do limite de memória do PHP.
+- Configuração de usuário e permissões.
+- Definição do diretório de trabalho e usuário do contêiner.
+
+Se precisar de ajuda adicional ou encontrar algum problema, sinta-se à vontade para perguntar!
+
+---
+
+Se precisar de mais ajustes ou informações adicionais, estou aqui para ajudar!
