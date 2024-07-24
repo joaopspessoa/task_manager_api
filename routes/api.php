@@ -30,5 +30,9 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::delete('tasks/{id}', 'delete');
     });
 
-    Route::post('logout', [AuthController::class, 'logout']);
+    Route::controller(AuthController::class)->group(function () {
+        Route::post('logout',  'logout');
+        Route::put('change-password', 'changePassword');
+        Route::get('profile', 'profile');
+    });
 });
