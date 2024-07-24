@@ -1,7 +1,3 @@
-Entendi! Vamos ajustar o texto para um formato de README mais tradicional e direto:
-
----
-
 # Task Manager API
 
 Este projeto é uma API para gerenciar tarefas, construída com PHP, Nginx e PostgreSQL. A seguir estão as instruções para configurar e rodar o projeto usando Docker.
@@ -18,8 +14,8 @@ Este projeto é uma API para gerenciar tarefas, construída com PHP, Nginx e Pos
 Clone o repositório do projeto e navegue até o diretório do projeto:
 
 ```bash
-git clone <URL_DO_REPOSITORIO>
-cd <DIRETORIO_DO_PROJETO>
+git clone https://github.com/joaopspessoa/task_manager_api.git
+cd task_manager_api
 ```
 
 ### 2. Criar e Iniciar os Contêineres
@@ -27,7 +23,7 @@ cd <DIRETORIO_DO_PROJETO>
 Crie e inicie os contêineres com Docker Compose:
 
 ```bash
-docker-compose up -d
+docker-compose up -d --build
 ```
 
 ### 3. Instalar Dependências do PHP
@@ -35,13 +31,12 @@ docker-compose up -d
 Acesse o contêiner da aplicação e instale as dependências do PHP:
 
 ```bash
-docker-compose exec app bash
-composer install
+docker-compose exec app composer install
 ```
 
 ### 4. Configurar o Ambiente
 
-Certifique-se de que o arquivo `.env` está presente no diretório raiz. Se não houver, copie o exemplo fornecido:
+Copie o exemplo fornecido:
 
 ```bash
 cp .env.example .env
@@ -99,7 +94,3 @@ O `Dockerfile` configura a imagem para a aplicação PHP, incluindo:
 - Definição do diretório de trabalho e usuário do contêiner.
 
 Se precisar de ajuda adicional ou encontrar algum problema, sinta-se à vontade para perguntar!
-
----
-
-Se precisar de mais ajustes ou informações adicionais, estou aqui para ajudar!
